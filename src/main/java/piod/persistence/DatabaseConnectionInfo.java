@@ -1,4 +1,4 @@
-package persistence;
+package piod.persistence;
 
 public class DatabaseConnectionInfo {
 

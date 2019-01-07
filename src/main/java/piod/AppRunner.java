@@ -1,4 +1,6 @@
-import action.MainAction;
+package piod;
+
+import piod.action.MainAction;
 
 public class AppRunner {
     public static void main(String[] args) {

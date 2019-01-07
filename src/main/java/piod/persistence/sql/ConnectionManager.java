@@ -1,9 +1,9 @@
-package persistence.sql;
+package piod.persistence.sql;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import persistence.DatabaseConnectionInfo;
-import persistence.PersistenceConstants;
+import piod.persistence.DatabaseConnectionInfo;
+import piod.persistence.PersistenceConstants;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,13 +27,13 @@ public class ConnectionManager {
     public Boolean getConnected() {
         return isConnected;
     }
-    public static final String DRIVER_INFO = "com.mysql.cj.jdbc.Driver";
+    public static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
 
     private void connect(DatabaseConnectionInfo databaseConnectionInfo) {
         try {
 
             try {
-                Class.forName(DRIVER_INFO);
+                Class.forName(DRIVER_CLASS);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
