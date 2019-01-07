@@ -1,23 +1,34 @@
 package piod.action;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import piod.model.JsonParseable;
 import piod.persistence.DatabaseConnectionInfo;
 import piod.persistence.sql.HibernateConnectionManager;
+import piod.service.PersistenceManager;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class MainAction implements Action {
+    private static Log LOGGER = LogFactory.getLog(MainAction.class);
 
     @Override
     public void execute() {
 
-        HibernateConnectionManager connectionManager = HibernateConnectionManager.getInstance();
-        connectionManager.createDummyTables();
-        List<String> tableNames = connectionManager.fetchAllTableNamesFromDatabase();
+        PersistenceManager persistenceManager = new PersistenceManager();
+        persistenceManager.createDummyTables();
+        List<String> tableNames = persistenceManager.fetchAllTableNamesFromDatabase();
         System.out.println("tableNames = " + tableNames);
-        List<JsonParseable> jsonParseables = connectionManager.fetchAllJsonParseablesFromTables(tableNames);
-        System.out.println("jsonParseables = " + jsonParseables);
+        List<JsonParseable> jsonParseables = persistenceManager.fetchAllJsonParseablesFromTables(tableNames);
+        for(JsonParseable singleJsonParseable:jsonParseables){
+            try {
+                System.out.println(singleJsonParseable.toJson());
+            } catch (JsonProcessingException e) {
+                LOGGER.error(e);
+            }
+        }
 
         //TODO pass connection to next piod.action
         //TODO create piod.action picker?

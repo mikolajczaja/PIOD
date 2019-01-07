@@ -18,7 +18,7 @@ public class Car implements JsonParseable {
     @Column(name = "id")
     private int id;
     private String color;
-    @OneToMany(mappedBy = "car")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
     private Set<Driver> crew = new HashSet<>();
 
     public Car() {
