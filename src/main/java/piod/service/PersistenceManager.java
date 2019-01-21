@@ -27,7 +27,7 @@ public class PersistenceManager {
                 results.add(create.select().from(singleTableName).fetch());
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             LOGGER.error(e);
         }
         return results;
@@ -49,7 +49,7 @@ public class PersistenceManager {
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             LOGGER.error(e);
         }
         return results;
