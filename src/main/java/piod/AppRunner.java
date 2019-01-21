@@ -1,11 +1,26 @@
 package piod;
 
-import piod.action.MainAction;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import piod.gui.SceneDataHolder;
 
-public class AppRunner {
+import java.io.IOException;
+
+public class AppRunner extends Application {
+
     public static void main(String[] args) {
+        launch(args);
+    }
 
-        MainAction mainAction = new MainAction();
-        mainAction.execute();
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        Stage stage = SceneDataHolder.createInstance(primaryStage).getStage();
+        Parent root = FXMLLoader.load(getClass().getResource("/loginScene.fxml"));
+        stage.setTitle("Login Window");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

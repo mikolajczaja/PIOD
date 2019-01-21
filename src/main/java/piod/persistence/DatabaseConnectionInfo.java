@@ -6,14 +6,7 @@ public class DatabaseConnectionInfo {
     private String userName;
     private String password;
 
-    public DatabaseConnectionInfo(String databaseName, String userName, String password) {
-        this.databaseName = databaseName;
-        this.userName = userName;
-        this.password = password;
-    }
-
     public DatabaseConnectionInfo() {
-
     }
 
     public String getDatabaseName() {

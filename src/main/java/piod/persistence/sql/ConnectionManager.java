@@ -1,7 +1,5 @@
 package piod.persistence.sql;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import piod.persistence.DatabaseConnectionInfo;
 import piod.persistence.PersistenceConstants;
 
@@ -11,38 +9,38 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
 
-    private static Log LOGGER = LogFactory.getLog(ConnectionManager.class);
+    private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
 
     private Connection connection;
-    private Boolean isConnected = false;
+    private Boolean connected = false;
+    private DatabaseConnectionInfo databaseConnectionInfo;
 
-    public ConnectionManager(DatabaseConnectionInfo databaseConnectionInfo) {
-        connect(databaseConnectionInfo);
+    public ConnectionManager(DatabaseConnectionInfo databaseConnectionInfo) throws SQLException, ClassNotFoundException {
+        this.databaseConnectionInfo = databaseConnectionInfo;
+        connect();
     }
 
-    public Connection getConnection() {
+    public Connection getConnection() throws SQLException, ClassNotFoundException {
+        if (connection.isClosed()) {
+            connect();
+        }
         return connection;
     }
 
-    public Boolean getConnected() {
-        return isConnected;
+    public Boolean isConnected() {
+        return connected;
     }
-    public static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
 
-    private void connect(DatabaseConnectionInfo databaseConnectionInfo) {
-        try {
+    public String getDatabaseName() {
+        return databaseConnectionInfo.getDatabaseName();
+    }
 
-            try {
-                Class.forName(DRIVER_CLASS);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            connection = DriverManager.getConnection(getDatabaseInfo(databaseConnectionInfo.getDatabaseName()),
-                    databaseConnectionInfo.getUserName(), databaseConnectionInfo.getPassword());
-            isConnected = true;
-        } catch (SQLException e) {
-            LOGGER.error("database connection error, reason: " + e);
-        }
+    private void connect() throws SQLException, ClassNotFoundException {
+
+        Class.forName(DRIVER_CLASS);
+        connection = DriverManager.getConnection(getDatabaseInfo(databaseConnectionInfo.getDatabaseName()),
+                databaseConnectionInfo.getUserName(), databaseConnectionInfo.getPassword());
+        connected = true;
     }
 
     private String getDatabaseInfo(String databaseName) {
